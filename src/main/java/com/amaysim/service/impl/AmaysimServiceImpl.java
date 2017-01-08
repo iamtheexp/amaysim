@@ -135,11 +135,14 @@ public class AmaysimServiceImpl implements IAmaysimService {
         int shoppingCartItemListSize = shoppingCartItemList.size();
         BigDecimal shoppingCartTotalPriceBd = BigDecimal.ZERO;
 
-        System.out.println("Shopping cart items: ");
         for (int i = 0; i < shoppingCartItemListSize; i++) {
             shoppingCartItemList = priceRulesUtility.processProductPriceRules(shoppingCartItemList,
-                    i);
+                    i, productDao);
+        }
 
+        System.out.println("Shopping cart items: ");
+        shoppingCartItemListSize = shoppingCartItemList.size();
+        for (int i = 0; i < shoppingCartItemListSize; i++) {
             ShoppingCartItem newShoppingCartItem = shoppingCartItemList.get(i);
             shoppingCartTotalPriceBd = shoppingCartTotalPriceBd.add(newShoppingCartItem
                     .getTotalPrice());

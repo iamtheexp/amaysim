@@ -12,6 +12,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.amaysim.dao.entities.Product;
+import com.amaysim.dao.impl.ProductDaoImpl;
+import com.amaysim.dao.interfaces.IProductDao;
 import com.amaysim.dto.params.ShoppingCartItem;
 
 /**
@@ -26,6 +28,8 @@ public class PriceRulesUtilityTest {
     private static Product mediumProduct;
     private static Product largeProduct;
     private static Product gbProduct;
+
+    private static IProductDao productDao;
 
     @BeforeClass
     public static void setBeforeClass() {
@@ -52,6 +56,12 @@ public class PriceRulesUtilityTest {
         gbProduct.setCode(ProductConstants.Gb.CODE);
         gbProduct.setName(ProductConstants.Gb.NAME);
         gbProduct.setPrice(new BigDecimal(ProductConstants.Gb.PRICE));
+
+        productDao = new ProductDaoImpl();
+        productDao.create(smallProduct);
+        productDao.create(mediumProduct);
+        productDao.create(largeProduct);
+        productDao.create(gbProduct);
     }
 
     @Test
@@ -84,7 +94,7 @@ public class PriceRulesUtilityTest {
 
         for (int i = 0; i < shoppingCartItemListSize; i++) {
             shoppingCartItemList = priceRulesUtility.processProductPriceRules(shoppingCartItemList,
-                    i);
+                    i, productDao);
 
             ShoppingCartItem newShoppingCartItem = shoppingCartItemList.get(i);
             shoppingCartTotalPriceBd = shoppingCartTotalPriceBd.add(newShoppingCartItem
@@ -129,7 +139,7 @@ public class PriceRulesUtilityTest {
 
         for (int i = 0; i < shoppingCartItemListSize; i++) {
             shoppingCartItemList = priceRulesUtility.processProductPriceRules(shoppingCartItemList,
-                    i);
+                    i, productDao);
 
             ShoppingCartItem newShoppingCartItem = shoppingCartItemList.get(i);
             shoppingCartTotalPriceBd = shoppingCartTotalPriceBd.add(newShoppingCartItem
@@ -174,7 +184,7 @@ public class PriceRulesUtilityTest {
 
         for (int i = 0; i < shoppingCartItemListSize; i++) {
             shoppingCartItemList = priceRulesUtility.processProductPriceRules(shoppingCartItemList,
-                    i);
+                    i, productDao);
 
             ShoppingCartItem newShoppingCartItem = shoppingCartItemList.get(i);
             shoppingCartTotalPriceBd = shoppingCartTotalPriceBd.add(newShoppingCartItem
@@ -219,7 +229,7 @@ public class PriceRulesUtilityTest {
 
         for (int i = 0; i < shoppingCartItemListSize; i++) {
             shoppingCartItemList = priceRulesUtility.processProductPriceRules(shoppingCartItemList,
-                    i);
+                    i, productDao);
 
             ShoppingCartItem newShoppingCartItem = shoppingCartItemList.get(i);
             shoppingCartTotalPriceBd = shoppingCartTotalPriceBd.add(newShoppingCartItem

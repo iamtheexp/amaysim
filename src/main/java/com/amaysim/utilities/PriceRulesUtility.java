@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.amaysim.dao.entities.Product;
+import com.amaysim.dao.interfaces.IProductDao;
 import com.amaysim.dto.params.ShoppingCartItem;
 
 /**
@@ -22,7 +23,7 @@ public class PriceRulesUtility {
     private static final BigDecimal PROMO_CODE_DISCOUNT = new BigDecimal(".10");
 
     public List<ShoppingCartItem> processProductPriceRules(
-            List<ShoppingCartItem> shoppingCartItemList, int i) {
+            List<ShoppingCartItem> shoppingCartItemList, int i, IProductDao productDao) {
         ShoppingCartItem shoppingCartItem = shoppingCartItemList.get(i);
 
         int itemProductId = shoppingCartItem.getProduct().getId();
@@ -38,7 +39,7 @@ public class PriceRulesUtility {
 
         if (itemProductCode.equals(ProductConstants.Medium.CODE)) {
             shoppingCartItemList = processMediumProductPriceRule(shoppingCartItem,
-                    shoppingCartItemList, itemPieces);
+                    shoppingCartItemList, itemPieces, productDao);
         }
 
         if (itemProductCode.equals(ProductConstants.Large.CODE) && itemPieces > THREE_PIECES
@@ -71,8 +72,8 @@ public class PriceRulesUtility {
     }
 
     private List<ShoppingCartItem> processMediumProductPriceRule(ShoppingCartItem shoppingCartItem,
-            List<ShoppingCartItem> shoppingCartItemList, int itemPieces) {
-        Product promoProduct = shoppingCartItem.getProduct();
+            List<ShoppingCartItem> shoppingCartItemList, int itemPieces, IProductDao productDao) {
+        Product promoProduct = productDao.retrieve(ProductConstants.Gb.ID);
 
         ShoppingCartItem promoShoppingCartItem = new ShoppingCartItem();
         promoShoppingCartItem.setPieces(itemPieces);
